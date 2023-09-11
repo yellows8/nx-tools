@@ -77,7 +77,7 @@ def bdf_diff(prev, cur):
                 break
         if found is False:
             entrytype = 'removed'
-            ent = {'type': entrytype, 'status_updated': status_updated, 'data_updated': data_updated, 'entry': entry}
+            ent = {'type': entrytype, 'status_updated': status_updated, 'data_updated': data_updated, 'entry': prev_entry}
             out.append(ent)
     return out
 
