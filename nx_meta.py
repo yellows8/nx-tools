@@ -7,6 +7,18 @@ from os.path import exists
 
 # This is intended for use with other scripts (such as for diffing).
 
+def metaKcRegionMapTypeGetStr(Val):
+    if Val==0:
+        return "NoMapping"
+    elif Val==1:
+        return "KernelTraceBuffer"
+    elif Val==2:
+        return "OnMemoryBootImage"
+    elif Val==3:
+        return "DTB"
+    else:
+        return "0x%X" % (Val)
+
 def metaFindListDictWithValue(CmpVal, Val, ValKey):
     Out = None
     for TmpVal in Val:
@@ -37,7 +49,7 @@ def metaLoadFac(Fac, path):
         CurCount = struct.unpack('<I', Fac[Offset:Offset+0x4])[0]
         Offset=Offset+0x4
         for i in range(CurCount):
-            if Offset+0x8 > ContentOwnerInfoSize:
+            if Offset+0x8 - ContentOwnerInfoOffset > ContentOwnerInfoSize:
                 print("metaLoadFac('%s'): ContentOwnerIdCount (0x%X) is too large for the ContentOwnerInfoSize (0x%X)." % (path, CurCount, ContentOwnerInfoSize))
                 return None
             Id = struct.unpack('<Q', Fac[Offset:Offset+0x8])[0]
