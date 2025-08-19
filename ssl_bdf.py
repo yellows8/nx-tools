@@ -89,7 +89,7 @@ if __name__ == "__main__":
             if 'data_x509' in entry:
                 ent_x509 = entry['data_x509']
                 fingerprint = binascii.hexlify(ent_x509.fingerprint(hashes.SHA256())).decode('utf-8')
-                tmpstr = ", 'x509': {'fingerprint': '%s', ' serial_number': '0x%X', 'not_valid_before': '%s', 'not_valid_after': '%s', 'issuer': '%s', 'subject': '%s', 'signature_algorithm_oid': '%s'}" % (fingerprint, ent_x509.serial_number, ent_x509.not_valid_before, ent_x509.not_valid_after, ent_x509.issuer, ent_x509.subject, ent_x509.signature_algorithm_oid)
+                tmpstr = ", 'x509': {'fingerprint': '%s', ' serial_number': '0x%X', 'not_valid_before_utc': '%s', 'not_valid_after_utc': '%s', 'issuer': '%s', 'subject': '%s', 'signature_algorithm_oid': '%s'}" % (fingerprint, ent_x509.serial_number, ent_x509.not_valid_before_utc, ent_x509.not_valid_after_utc, ent_x509.issuer, ent_x509.subject, ent_x509.signature_algorithm_oid)
             else:
                 tmpstr = ""
             print("{'id': %d, 'status': %d, 'data_size': 0x%X, 'data_offset': 0x%X%s}," % (entry['id'], entry['status'], entry['data_size'], entry['data_offset'], tmpstr))
