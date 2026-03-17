@@ -19,6 +19,23 @@ def metaKcRegionMapTypeGetStr(Val):
     else:
         return "0x%X" % (Val)
 
+def metaSaveDataOwnerAccessToStr(Access):
+    out = "0x%x (" % (Access)
+
+    if Access & 0x1:
+        out+= "R"
+    else:
+        out+= "-"
+
+    if Access & 0x2:
+        out+= "W"
+    else:
+        out+= "-"
+
+    out+= ")"
+
+    return out
+
 def metaFindListDictWithValue(CmpVal, Val, ValKey):
     Out = None
     for TmpVal in Val:
