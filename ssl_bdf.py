@@ -24,7 +24,10 @@ def bdf_read(path):
                     entrydata = data[0x8+data_offset:0x8+data_offset+data_size]
                     entry['data'] = entrydata
                     if path.find("TrustedCerts")!=-1:
-                        entry['data_x509'] = x509.load_der_x509_certificate(entrydata)
+                        try: # "CryptographyDeprecationWarning: Parsed a serial number which wasn't positive (i.e., it was negative or zero), which is disallowed by RFC 5280. Loading this certificate will cause an exception in a future release of cryptography."
+                            entry['data_x509'] = x509.load_der_x509_certificate(entrydata)
+                        except:
+                            pass
                     out.append(entry)
     else:
         print("bdf_read(): File doesn't exist: %s" % (path))
