@@ -299,8 +299,13 @@ def metaLoad(path):
                     Aci = data[AciOffset:AciOffset+AciSize]
                     Acid = data[AcidOffset:AcidOffset+AcidSize]
 
-                    magicnum, Size, Version, Unk_x209, Reserved_x20A, Reserved_x20B, Flags, ProgramIdMin, ProgramIdMax = struct.unpack('<IIBBBBIQQ', Acid[0x200:0x220])
-                    Reserved_x238, Reserved_x23C = struct.unpack('<II', Acid[0x238:0x240])
+                    Acid_dataoff = 0x200
+                    magicnum = struct.unpack('<I', Acid[Acid_dataoff:Acid_dataoff+0x4])[0]
+                    if magicnum!=0x44494341: # Detect Ounce ACID. Not really proper, but this avoids needing a platform user-input param (?).
+                        Acid_dataoff+= 0x100
+
+                    magicnum, Size, Version, Unk_x209, Reserved_x20A, Reserved_x20B, Flags, ProgramIdMin, ProgramIdMax = struct.unpack('<IIBBBBIQQ', Acid[Acid_dataoff:Acid_dataoff+0x20])
+                    Reserved_x238, Reserved_x23C = struct.unpack('<II', Acid[Acid_dataoff+0x38:Acid_dataoff+0x38+0x8])
 
                     if magicnum!=0x44494341:
                         print("Bad ACID magicnum (0x%x) for metaLoad('%s')." % (magicnum, path))
