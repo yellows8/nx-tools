@@ -269,7 +269,7 @@ def metaLoad(path):
                     print("Bad META magicnum (0x%x) for metaLoad('%s')." % (magicnum, path))
                     out = None
             else:
-                SignatureKeyGeneration, Reserved_x8, Flags, Reserved_xD, MainThreadPriority, MainThreadCoreNumber, Reserved_x10, SystemResourceSize, Version, MainThreadStackSize = struct.unpack('<IIBBBBIIII', data[0x4:0x20])
+                SignatureKeyGeneration, Reserved_x8, Flags0, Flags1, MainThreadPriority, MainThreadCoreNumber, Reserved_x10, SystemResourceSize, Version, MainThreadStackSize = struct.unpack('<IIBBBBIIII', data[0x4:0x20])
                 Name = data[0x20:0x20+0x10]
                 ProductCode = data[0x30:0x30+0x10]
                 Reserved_x40 = data[0x40:0x40+0x30]
@@ -277,8 +277,8 @@ def metaLoad(path):
 
                 out['SignatureKeyGeneration'] = SignatureKeyGeneration
                 out['Reserved_x8'] = Reserved_x8
-                out['Flags'] = Flags
-                out['Reserved_xD'] = Reserved_xD
+                out['Flags0'] = Flags0
+                out['Flags1'] = Flags1
                 out['MainThreadPriority'] = MainThreadPriority
                 out['MainThreadCoreNumber'] = MainThreadCoreNumber
                 out['Reserved_x10'] = Reserved_x10
@@ -304,14 +304,14 @@ def metaLoad(path):
                     if magicnum!=0x44494341: # Detect Ounce ACID. Not really proper, but this avoids needing a platform user-input param (?).
                         Acid_dataoff+= 0x100
 
-                    magicnum, Size, Version, Unk_x209, Reserved_x20A, Reserved_x20B, Flags, ProgramIdMin, ProgramIdMax = struct.unpack('<IIBBBBIQQ', Acid[Acid_dataoff:Acid_dataoff+0x20])
+                    magicnum, Size, Version, Version2, Reserved_x20A, Reserved_x20B, Flags, ProgramIdMin, ProgramIdMax = struct.unpack('<IIBBBBIQQ', Acid[Acid_dataoff:Acid_dataoff+0x20])
                     Reserved_x238, Reserved_x23C = struct.unpack('<II', Acid[Acid_dataoff+0x38:Acid_dataoff+0x38+0x8])
 
                     if magicnum!=0x44494341:
                         print("Bad ACID magicnum (0x%x) for metaLoad('%s')." % (magicnum, path))
                         out = None
                     else:
-                        out['Acid'] = {'Version': Version, 'Unk_x209': Unk_x209, 'Reserved_x20A': Reserved_x20A, 'Reserved_x20B': Reserved_x20B, 'Flags': Flags, 'ProgramIdMin': ProgramIdMin, 'ProgramIdMax': ProgramIdMax}
+                        out['Acid'] = {'Version': Version, 'Version2': Version2, 'Reserved_x20A': Reserved_x20A, 'Reserved_x20B': Reserved_x20B, 'Flags': Flags, 'ProgramIdMin': ProgramIdMin, 'ProgramIdMax': ProgramIdMax}
 
                         magicnum, Reserved_x4, Reserved_x8, Reserved_xC, ProgramId, Reserved_x18, Reserved_x1C = struct.unpack('<IIIIQII', Aci[0x0:0x20])
                         FacOffset, FacSize, SacOffset, SacSize, KcOffset, KcSize = struct.unpack('<IIIIII', Aci[0x20:0x38])
